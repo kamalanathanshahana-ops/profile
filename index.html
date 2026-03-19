@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shahana Kamalnathan — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1a2340;
+    --navy-mid: #243058;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #f9f5ef;
+    --warm-white: #fefcf8;
+    --text-dark: #1a1a2e;
+    --text-mid: #3d3d5c;
+    --text-soft: #7a7a9a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* ── CURSOR ── */
+  body { cursor: none; }
+  #cursor {
+    width: 12px; height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease, background 0.2s;
+    transform: translate(-50%, -50%);
+  }
+  #cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.5;
+    transition: transform 0.4s ease;
+    transform: translate(-50%, -50%);
+  }
+
+  /* ── LOADER ── */
+  #loader {
+    position: fixed; inset: 0;
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9000;
+    transition: opacity 0.8s ease, visibility 0.8s;
+  }
+  #loader.done { opacity: 0; visibility: hidden; }
+  .loader-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    overflow: hidden;
+  }
+  .loader-text span {
+    display: inline-block;
+    animation: slideUp 0.6s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .loader-text span:nth-child(1) { animation-delay: 0.1s; }
+  .loader-text span:nth-child(2) { animation-delay: 0.25s; }
+  @keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    padding: 1.2rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: transparent;
+    transition: background 0.4s, box-shadow 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(26,35,64,0.95);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 2px 30px rgba(0,0,0,0.2);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    position: relative;
+    transition: color 0.2s;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    background: var(--navy);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg-pattern {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 80%, rgba(201,168,76,0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(201,168,76,0.05) 0%, transparent 50%);
+  }
+  .hero-lines {
+    position: absolute; inset: 0; overflow: hidden;
+  }
+  .hero-lines::before, .hero-lines::after {
+    content: '';
+    position: absolute;
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 50%;
+  }
+  .hero-lines::before { width: 600px; height: 600px; top: -150px; right: -100px; }
+  .hero-lines::after  { width: 400px; height: 400px; bottom: -80px; left: -80px; }
+
+  .hero-left {
+    display: flex; align-items: center; justify-content: center;
+    padding: 8rem 4rem 4rem;
+    position: relative; z-index: 2;
+  }
+  .hero-image-wrap {
+    position: relative;
+    width: 320px; height: 320px;
+    animation: fadeInLeft 1s 0.8s both;
+  }
+  @keyframes fadeInLeft {
+    from { transform: translateX(-40px); opacity: 0; }
+    to   { transform: translateX(0);     opacity: 1; }
+  }
+  .hero-image-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: spin 20s linear infinite;
+  }
+  .hero-image-wrap::after {
+    content: '';
+    position: absolute;
+    inset: -24px;
+    border: 1px dashed rgba(201,168,76,0.3);
+    border-radius: 50%;
+    animation: spin 30s linear infinite reverse;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .hero-image-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid var(--gold);
+    display: block;
+  }
+  .hero-image-placeholder {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    border: 4px solid var(--gold);
+    background: linear-gradient(135deg, var(--navy-mid), #2d3a6b);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .hero-right {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 8rem 5rem 4rem 3rem;
+    position: relative; z-index: 2;
+  }
+  .hero-tag {
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+    animation: fadeInUp 0.8s 1s both;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 30px; height: 1px;
+    background: var(--gold);
+  }
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.05;
+    margin-bottom: 0.4rem;
+    animation: fadeInUp 0.8s 1.1s both;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-title {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    margin-bottom: 2rem;
+    animation: fadeInUp 0.8s 1.2s both;
+  }
+  .hero-bio {
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: rgba(255,255,255,0.65);
+    max-width: 440px;
+    margin-bottom: 2.5rem;
+    animation: fadeInUp 0.8s 1.3s both;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem;
+    animation: fadeInUp 0.8s 1.4s both;
+  }
+  .btn-primary {
+    padding: 0.85rem 2rem;
+    background: var(--gold);
+    color: var(--navy);
+    border: none; border-radius: 2px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-outline {
+    padding: 0.85rem 2rem;
+    background: transparent;
+    color: rgba(255,255,255,0.8);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 2px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+  @keyframes fadeInUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  /* ── SCROLL INDICATOR ── */
+  .scroll-indicator {
+    position: absolute; bottom: 2.5rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    z-index: 2;
+    animation: fadeInUp 1s 1.8s both;
+  }
+  .scroll-indicator span {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 1; transform: scaleY(1); }
+    50%       { opacity: 0.4; transform: scaleY(0.7); }
+  }
+
+  /* ── SECTION SHARED ── */
+  section { padding: 6rem 0; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 4rem; }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .section-label::before {
+    content: '';
+    width: 25px; height: 1px;
+    background: var(--gold);
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  .section-divider {
+    width: 50px; height: 2px;
+    background: var(--gold);
+    margin-bottom: 3rem;
+  }
+
+  /* ── ABOUT ── */
+  #about {
+    background: var(--warm-white);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .about-text p {
+    font-size: 1rem;
+    line-height: 1.9;
+    color: var(--text-mid);
+    margin-bottom: 1.2rem;
+  }
+  .about-contacts {
+    margin-top: 2rem;
+    display: flex; flex-direction: column; gap: 0.8rem;
+  }
+  .contact-item {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0.8rem 1rem;
+    background: var(--cream);
+    border-left: 3px solid var(--gold);
+  }
+  .contact-item .icon { font-size: 1.1rem; }
+  .contact-item a, .contact-item span {
+    color: var(--text-mid);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+  .contact-item a:hover { color: var(--gold); }
+
+  .about-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+  }
+  .stat-card {
+    padding: 2rem 1.5rem;
+    background: var(--navy);
+    position: relative; overflow: hidden;
+    transition: transform 0.3s;
+  }
+  .stat-card:hover { transform: translateY(-4px); }
+  .stat-card::before {
+    content: '';
+    position: absolute; bottom: 0; right: 0;
+    width: 60px; height: 60px;
+    background: rgba(201,168,76,0.1);
+    border-radius: 50% 0 0 0;
+  }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--gold);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .stat-label {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* ── EDUCATION ── */
+  #education { background: var(--cream); }
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+  .timeline-item {
+    position: relative;
+    padding: 0 0 3rem 2rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  .timeline-item.visible { opacity: 1; transform: translateX(0); }
+  .timeline-dot {
+    position: absolute; left: -2rem;
+    top: 0.3rem;
+    width: 12px; height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+    border: 3px solid var(--cream);
+    box-shadow: 0 0 0 3px var(--gold);
+  }
+  .timeline-year {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+  .timeline-degree {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--navy);
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+  .timeline-school {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+  }
+
+  /* ── SKILLS ── */
+  #skills { background: var(--navy); }
+  #skills .section-title { color: #fff; }
+  #skills .section-label { color: var(--gold-light); }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+  .skill-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 1.8rem;
+    transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s, transform 0.5s, background 0.3s, border-color 0.3s;
+  }
+  .skill-card.visible { opacity: 1; transform: translateY(0); }
+  .skill-card:hover {
+    background: rgba(201,168,76,0.08);
+    border-color: var(--gold);
+    transform: translateY(-4px);
+  }
+  .skill-icon {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+  }
+  .skill-name {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.9);
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+  .skill-sub {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.35);
+  }
+  .skill-bar-wrap {
+    margin-top: 1rem;
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .skill-bar {
+    height: 100%;
+    background: linear-gradient(to right, var(--gold), var(--gold-light));
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1s cubic-bezier(0.16,1,0.3,1);
+  }
+  .skill-card.visible .skill-bar { transform: scaleX(1); }
+
+  /* ── QUALIFICATIONS ── */
+  #qualifications { background: var(--warm-white); }
+  .qual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .qual-card {
+    padding: 2.5rem;
+    border: 1px solid rgba(26,35,64,0.1);
+    position: relative;
+    background: #fff;
+    transition: box-shadow 0.3s, transform 0.3s;
+    opacity: 0; transform: translateY(20px);
+  }
+  .qual-card.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s, transform 0.6s, box-shadow 0.3s; }
+  .qual-card:hover { box-shadow: 0 12px 40px rgba(26,35,64,0.1); transform: translateY(-4px); }
+  .qual-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--gold);
+  }
+  .qual-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .qual-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--navy);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .qual-desc { font-size: 0.9rem; color: var(--text-soft); line-height: 1.7; }
+
+  /* ── LANGUAGES ── */
+  #languages { background: var(--cream); }
+  .lang-grid { display: flex; gap: 2rem; flex-wrap: wrap; }
+  .lang-card {
+    flex: 1; min-width: 200px;
+    padding: 2rem;
+    background: var(--navy);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .lang-card::after {
+    content: '';
+    position: absolute;
+    width: 80px; height: 80px;
+    background: rgba(201,168,76,0.08);
+    border-radius: 50%;
+    bottom: -20px; right: -20px;
+  }
+  .lang-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 0.4rem;
+  }
+  .lang-level {
+    font-size: 0.8rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .lang-dots {
+    display: flex; gap: 0.4rem; justify-content: center;
+    margin-top: 1rem;
+  }
+  .lang-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.3);
+  }
+  .lang-dot.active { background: var(--gold); }
+
+  /* ── CONTACT / REFERENCE ── */
+  #contact { background: var(--navy); position: relative; overflow: hidden; }
+  #contact::before {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    border: 1px solid rgba(201,168,76,0.06);
+    border-radius: 50%;
+    top: -200px; right: -100px;
+  }
+  #contact .section-title { color: #fff; }
+  #contact .section-label { color: var(--gold-light); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .contact-info p {
+    color: rgba(255,255,255,0.55);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+  .contact-details { display: flex; flex-direction: column; gap: 1.2rem; }
+  .cdetail {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1.2rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(201,168,76,0.15);
+  }
+  .cdetail-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .cdetail-text label {
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.2rem;
+  }
+  .cdetail-text a, .cdetail-text span {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+  }
+  .cdetail-text a:hover { color: var(--gold); }
+
+  .reference-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 2.5rem;
+    position: relative;
+  }
+  .reference-card::before {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    color: rgba(201,168,76,0.15);
+    position: absolute;
+    top: -1rem; left: 1.5rem;
+    line-height: 1;
+  }
+  .ref-title {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+  .ref-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+  .ref-meta { font-size: 0.85rem; color: rgba(255,255,255,0.45); margin-bottom: 1.5rem; }
+  .ref-contacts { display: flex; flex-direction: column; gap: 0.6rem; }
+  .ref-contacts span {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.6);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .ref-contacts a {
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .ref-contacts a:hover { color: var(--gold); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #0e1526;
+    padding: 2rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  footer span {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.05em;
+  }
+  .footer-gold { color: var(--gold); }
+
+  /* ── REVEAL ON SCROLL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    #hero { grid-template-columns: 1fr; min-height: auto; padding-top: 6rem; }
+    .hero-left { padding: 3rem 2rem 1rem; }
+    .hero-right { padding: 2rem; }
+    .about-grid, .contact-grid, .qual-grid { grid-template-columns: 1fr; }
+    nav { padding: 1rem 2rem; }
+    .nav-links { gap: 1.2rem; }
+    .container { padding: 0 2rem; }
+    footer { padding: 1.5rem 2rem; flex-direction: column; text-align: center; }
+  }
+  @media (max-width: 600px) {
+    .hero-image-wrap { width: 220px; height: 220px; }
+    .about-stats { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-text">
+    <span>Shahana</span>&nbsp;<span>Kamalnathan</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">SK</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#qualifications">Qualifications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-lines"></div>
+
+  <div class="hero-left">
+    <div class="hero-image-wrap">
+      <div class="hero-image-placeholder">SK</div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-tag">IT Graduate &amp; Web Developer</div>
+    <h1 class="hero-name">Shahana<br><em>Kamalnathan</em></h1>
+    <p class="hero-title">ICT NQV Level 4 &middot; NQV Level 5 (Ongoing)</p>
+    <p class="hero-bio">
+      Motivated IT graduate with foundational knowledge of web development and databases. 
+      Detail-oriented and eager to learn, adapt, and contribute to a growing organisation 
+      with strong communication and organisational skills.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Get in Touch</a>
+      <a href="#skills" class="btn-outline">View Skills</a>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="section-label">Who I Am</div>
+        <h2 class="section-title">About Me</h2>
+        <div class="section-divider"></div>
+        <p>
+          I am a motivated IT graduate with a passion for web development and database management. 
+          My academic journey has equipped me with hands-on skills in HTML, CSS, PHP, and MySQL, 
+          while my NQV qualifications reflect my commitment to continuous professional growth.
+        </p>
+        <p>
+          I thrive in collaborative environments, bring strong attention to detail, and am eager 
+          to apply my technical and interpersonal skills to support organisational goals.
+        </p>
+        <div class="about-contacts">
+          <div class="contact-item">
+            <span class="icon">📞</span>
+            <a href="tel:0775389196">0775389196</a>
+          </div>
+          <div class="contact-item">
+            <span class="icon">✉️</span>
+            <a href="mailto:kamalanathanshahana@gmail.com">kamalanathanshahana@gmail.com</a>
+          </div>
+          <div class="contact-item">
+            <span class="icon">📍</span>
+            <span>MessalaiNorth, Messalai</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-stats reveal">
+        <div class="stat-card">
+          <div class="stat-number">4+</div>
+          <div class="stat-label">Tech Skills</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">2</div>
+          <div class="stat-label">Languages</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">NQV</div>
+          <div class="stat-label">Level 4 &amp; 5</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">2026</div>
+          <div class="stat-label">Expected Grad.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container">
+    <div class="section-label reveal">Academic Journey</div>
+    <h2 class="section-title reveal">Education</h2>
+    <div class="section-divider reveal"></div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2016</div>
+        <div class="timeline-degree">O/L — Ordinary Level</div>
+        <div class="timeline-school">National Examinations Sri Lanka</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2023</div>
+        <div class="timeline-degree">NQV Level 4 — ICT</div>
+        <div class="timeline-school">Completed National Qualifications &amp; Vocational Certificate</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2024 – 2026</div>
+        <div class="timeline-degree">NQV Level 5 — ICT (Ongoing)</div>
+        <div class="timeline-school">Currently pursuing advanced vocational qualification in ICT</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label">What I Know</div>
+    <h2 class="section-title">Technical Skills</h2>
+    <div class="section-divider" style="background:var(--gold);"></div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-icon">🗄️</div>
+        <div class="skill-name">Database Basics</div>
+        <div class="skill-sub">MySQL</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:70%"></div></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🌐</div>
+        <div class="skill-name">Web Technologies</div>
+        <div class="skill-sub">HTML, CSS, Basic PHP</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:75%"></div></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🎨</div>
+        <div class="skill-name">Graphics Design</div>
+        <div class="skill-sub">Visual Design Fundamentals</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:65%"></div></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📁</div>
+        <div class="skill-name">Project Management</div>
+        <div class="skill-sub">Organisation &amp; Planning</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:70%"></div></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">💬</div>
+        <div class="skill-name">Communication</div>
+        <div class="skill-sub">Bilingual — EN &amp; TA</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:85%"></div></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🎤</div>
+        <div class="skill-name">Elocution</div>
+        <div class="skill-sub">Public Speaking &amp; Presentation</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUALIFICATIONS -->
+<section id="qualifications">
+  <div class="container">
+    <div class="section-label reveal">Achievements</div>
+    <h2 class="section-title reveal">Qualifications</h2>
+    <div class="section-divider reveal"></div>
+    <div class="qual-grid">
+      <div class="qual-card">
+        <div class="qual-icon">🎤</div>
+        <div class="qual-name">Elocution</div>
+        <div class="qual-desc">
+          Certified in Elocution — demonstrating proficiency in public speaking, 
+          presentation skills, and professional verbal communication.
+        </div>
+      </div>
+      <div class="qual-card">
+        <div class="qual-icon">💻</div>
+        <div class="qual-name">ICT NQV Level 4</div>
+        <div class="qual-desc">
+          Successfully completed the National Qualifications &amp; Vocational (NQV) 
+          Level 4 certificate in Information &amp; Communication Technology (2023).
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LANGUAGES -->
+<section id="languages" style="background:var(--cream); padding:4rem 0;">
+  <div class="container">
+    <div class="section-label reveal">Communication</div>
+    <h2 class="section-title reveal">Languages</h2>
+    <div class="section-divider reveal"></div>
+    <div class="lang-grid reveal">
+      <div class="lang-card">
+        <div class="lang-name">English</div>
+        <div class="lang-level">Proficient</div>
+        <div class="lang-dots">
+          <div class="lang-dot active"></div>
+          <div class="lang-dot active"></div>
+          <div class="lang-dot active"></div>
+          <div class="lang-dot active"></div>
+          <div class="lang-dot"></div>
+        </div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-name">Tamil</div>
+        <div class="lang-level">Native</div>
+        <div class="lang-dots">
+          <div class="lang-dot active"></div>
+          <div class="lang-dot active"></div>
+          <div class="lang-dot active"></div>
+          <div class="lang-dot active"></div>
+          <div class="lang-dot active"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <div class="section-label">Let's Connect</div>
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="section-divider"></div>
+        <div class="contact-info">
+          <p>
+            I'm open to opportunities, internships, and collaborations. 
+            Feel free to reach out — I'd love to hear from you.
+          </p>
+        </div>
+        <div class="contact-details">
+          <div class="cdetail">
+            <span class="cdetail-icon">📞</span>
+            <div class="cdetail-text">
+              <label>Phone</label>
+              <a href="tel:+94775389196">+94 775 389 196</a>
+            </div>
+          </div>
+          <div class="cdetail">
+            <span class="cdetail-icon">✉️</span>
+            <div class="cdetail-text">
+              <label>Email</label>
+              <a href="mailto:kamalanathanshahana@gmail.com">kamalanathanshahana@gmail.com</a>
+            </div>
+          </div>
+          <div class="cdetail">
+            <span class="cdetail-icon">📍</span>
+            <div class="cdetail-text">
+              <label>Location</label>
+              <span>MessalaiNorth, Messalai, Sri Lanka</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reference-card">
+        <div class="ref-title">Reference</div>
+        <div class="ref-name">Shahana Kamalnathan</div>
+        <div class="ref-meta">ICT Professional · NQV Qualified</div>
+        <div class="ref-contacts">
+          <span>📞 <a href="tel:+94775389196">+94 775 389 196</a></span>
+          <span>✉️ <a href="mailto:kamalanathanshahana@gmail.com">kamalanathanshahana@gmail.com</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 <span class="footer-gold">Shahana Kamalnathan</span>. All rights reserved.</span>
+  <span>Designed with <span class="footer-gold">♥</span> · MessalaiNorth, Sri Lanka</span>
+</footer>
+
+<script>
+  // ── LOADER ──
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('done');
+    }, 1800);
+  });
+
+  // ── CURSOR ──
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top  = e.clientY + 'px';
+    }, 80);
+  });
+
+  // ── NAV SCROLL ──
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ── INTERSECTION OBSERVER ──
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 120);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal, .timeline-item, .skill-card, .qual-card').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
